@@ -1,0 +1,26 @@
+server:
+  error:
+    include-stacktrace: on_param
+
+spring:
+  datasource:
+    username: ""
+    password: ""
+    url: "jdbc:h2:./taskManager"
+    driverClassName: org.h2.Driver
+
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2console/
+      settings:
+        web-allow-others: true
+
+logging:
+  level:
+    root: INFO
+    web: DEBUG
