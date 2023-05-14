@@ -1,6 +1,7 @@
 package hexlet.code.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -29,13 +33,20 @@ public class User {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @NotBlank(message = "First name should not be empty")
     private String firstName;
 
+    @NotBlank(message = "Last name should not be empty")
     private String lastName;
 
+    @NotBlank(message = "Email should not be empty")
+    @Email(message = "Email should be valid")
     @Column(unique = true)
     private String email;
 
+    @JsonIgnore
+    @NotBlank(message = "Password should not be empty")
+    @Size(min = 3, message = "Password should be longer than 3 chars")
     private String password;
 
     @CreationTimestamp

@@ -3,7 +3,8 @@ package hexlet.code.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.dto.UserDTO;
+import hexlet.code.component.JWTHelper;
+import hexlet.code.dto.UserDto;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,25 +13,28 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.Map;
+
 import static hexlet.code.controllers.UserController.USER_CONTROLLER_PATH;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @Component
 public class TestUtils {
-    public static final String TEST_USERNAME = "email@email.com";
-    public static final String TEST_USERNAME_2 = "email_2@email.com";
+    public static final String TEST_EMAIL = "email@email.com";
+    public static final String TEST_EMAIL_2 = "email_2@email.com";
 
     private static final ObjectMapper MAPPER = new ObjectMapper().findAndRegisterModules();
 
-    private final UserDTO testDTO = new UserDTO(
-            TEST_USERNAME,
+    private final UserDto testDTO = new UserDto(
             "first_name",
             "last_name",
+            TEST_EMAIL,
             "pwd"
     );
 
-    public UserDTO getTestDTO() {
+    public UserDto getTestDTO() {
         return testDTO;
     }
 
@@ -40,6 +44,9 @@ public class TestUtils {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private JWTHelper jwtHelper;
+
     public void tearDown() {
         userRepository.deleteAll();
     }
@@ -48,7 +55,7 @@ public class TestUtils {
         return userRepository.findByEmail(email).get();
     }
 
-    public ResultActions regUser(final UserDTO dto) throws Exception {
+    public ResultActions regUser(final UserDto dto) throws Exception {
         final var request = post(USER_CONTROLLER_PATH)
                 .content(asJson(dto))
                 .contentType(APPLICATION_JSON);
@@ -64,6 +71,12 @@ public class TestUtils {
         return mockMvc.perform(request);
     }
 
+    public ResultActions perform(final MockHttpServletRequestBuilder request, final String byUser) throws Exception {
+        final String token = jwtHelper.expiring(Map.of("username", byUser));
+        request.header(AUTHORIZATION, token);
+
+        return perform(request);
+    }
 
     public static String asJson(final Object object) throws JsonProcessingException {
         return MAPPER.writeValueAsString(object);
