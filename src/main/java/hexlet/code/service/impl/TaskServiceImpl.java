@@ -1,9 +1,11 @@
 package hexlet.code.service.impl;
 
 import hexlet.code.dto.TaskDto;
+import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 import hexlet.code.model.User;
 import hexlet.code.repository.TaskRepository;
+import hexlet.code.service.LabelService;
 import hexlet.code.service.TaskService;
 import hexlet.code.service.TaskStatusService;
 import hexlet.code.service.UserService;
@@ -19,9 +21,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
 
-    private TaskRepository taskRepository;
-    private TaskStatusService taskStatusService;
-    private UserService userService;
+    private final TaskRepository taskRepository;
+    private final TaskStatusService taskStatusService;
+    private final LabelService labelService;
+    private final UserService userService;
 
     @Override
     public Task getTaskById(long id) {
@@ -40,12 +43,18 @@ public class TaskServiceImpl implements TaskService {
         if (Objects.nonNull(taskDto.getExecutorId())) {
             executor = userService.getUserById(taskDto.getExecutorId());
         }
+
+        List<Label> labels = taskDto.getLabelIds().stream()
+                .map(labelService::getLabelById)
+                .toList();
+
         Task task = Task.builder()
                 .name(taskDto.getName())
                 .description(taskDto.getDescription())
                 .taskStatus(taskStatusService.getTaskStatusById(taskDto.getTaskStatusId()))
                 .author(userService.getCurrentUser())
                 .executor(executor)
+                .labels(labels)
                 .build();
 
         return taskRepository.save(task);
@@ -57,8 +66,14 @@ public class TaskServiceImpl implements TaskService {
         task.setName(taskDto.getName());
         task.setDescription(taskDto.getDescription());
         task.setTaskStatus(taskStatusService.getTaskStatusById(taskDto.getTaskStatusId()));
+
         Optional<User> executor = Optional.ofNullable(userService.getUserById(taskDto.getExecutorId()));
         executor.ifPresent(task::setExecutor);
+
+        List<Label> labels = taskDto.getLabelIds().stream()
+                .map(labelService::getLabelById)
+                .toList();
+        task.setLabels(labels);
 
         return taskRepository.save(task);
     }
