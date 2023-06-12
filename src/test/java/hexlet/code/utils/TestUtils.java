@@ -15,6 +15,7 @@ import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
+import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -75,11 +76,15 @@ public class TestUtils {
     private TaskStatusRepository taskStatusRepository;
 
     @Autowired
+    private LabelRepository labelRepository;
+
+    @Autowired
     private JWTHelper jwtHelper;
 
     public void tearDown() {
         taskRepository.deleteAll();
         taskStatusRepository.deleteAll();
+        labelRepository.deleteAll();
         userRepository.deleteAll();
     }
 

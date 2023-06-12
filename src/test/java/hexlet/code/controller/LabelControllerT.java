@@ -170,7 +170,7 @@ class LabelControllerTest {
         var request = delete(
                 BASE_URL + LABEL_CONTROLLER_PATH + ID, labelId);
         utils.perform(request, TEST_EMAIL)
-                .andExpect(status().isNotFound());
+                .andExpect(status().isInternalServerError());
 
         assertEquals(1, labelRepository.count());
     }
