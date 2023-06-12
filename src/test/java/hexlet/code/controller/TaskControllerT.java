@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.config.SpringConfigForIT;
 import hexlet.code.controllers.UserController;
 import hexlet.code.dto.TaskDto;
-import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.utils.TestUtils;

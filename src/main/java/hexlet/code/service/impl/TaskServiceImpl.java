@@ -1,5 +1,6 @@
 package hexlet.code.service.impl;
 
+import com.querydsl.core.types.Predicate;
 import hexlet.code.dto.TaskDto;
 import hexlet.code.model.Label;
 import hexlet.code.model.Task;
@@ -13,9 +14,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -38,15 +41,23 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<Task> getAllTasks(Predicate predicate) {
+        return StreamSupport.stream(taskRepository.findAll(predicate).spliterator(), false)
+                .toList();
+    }
+
+    @Override
     public Task createTask(TaskDto taskDto) {
         User executor = null;
         if (Objects.nonNull(taskDto.getExecutorId())) {
             executor = userService.getUserById(taskDto.getExecutorId());
         }
-
-        List<Label> labels = taskDto.getLabelIds().stream()
-                .map(labelService::getLabelById)
-                .toList();
+        List<Label> labels = null;
+        if (Objects.nonNull(taskDto.getLabelIds()) && taskDto.getLabelIds().size() > 0) {
+            labels = taskDto.getLabelIds().stream()
+                    .map(labelService::getLabelById)
+                    .toList();
+        }
 
         Task task = Task.builder()
                 .name(taskDto.getName())
@@ -70,10 +81,12 @@ public class TaskServiceImpl implements TaskService {
         Optional<User> executor = Optional.ofNullable(userService.getUserById(taskDto.getExecutorId()));
         executor.ifPresent(task::setExecutor);
 
-        List<Label> labels = taskDto.getLabelIds().stream()
-                .map(labelService::getLabelById)
-                .toList();
-        task.setLabels(labels);
+        List<Label> labels = null;
+        if (Objects.nonNull(taskDto.getLabelIds()) && taskDto.getLabelIds().size() > 0) {
+            labels = taskDto.getLabelIds().stream()
+                    .map(labelService::getLabelById)
+                    .toList();
+        }
 
         return taskRepository.save(task);
     }
