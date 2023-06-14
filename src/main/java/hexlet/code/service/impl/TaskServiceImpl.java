@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
@@ -72,22 +74,19 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task updateTask(long id, TaskDto taskDto) {
         Task task = taskRepository.findById(id).orElseThrow();
+        var labels = new ArrayList<Label>();
+        for (var labelId : taskDto.getLabelIds()) {
+            labels.add(labelService.getLabelById(labelId));
+        }
         task.setName(taskDto.getName());
         task.setDescription(taskDto.getDescription());
         task.setTaskStatus(taskStatusService.getTaskStatusById(taskDto.getTaskStatusId()));
-
+        task.setLabels(labels);
+        task.setAuthor(userService.getCurrentUser());
         Long executorId = taskDto.getExecutorId();
         if (executorId != null) {
             task.setExecutor(userService.getUserById(executorId));
         }
-
-        List<Label> labels = null;
-        if (Objects.nonNull(taskDto.getLabelIds()) && taskDto.getLabelIds().size() > 0) {
-            labels = taskDto.getLabelIds().stream()
-                    .map(labelService::getLabelById)
-                    .toList();
-        }
-        task.setLabels(labels);
 
         return taskRepository.save(task);
     }
