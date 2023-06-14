@@ -74,19 +74,22 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task updateTask(long id, TaskDto taskDto) {
         Task task = taskRepository.findById(id).orElseThrow();
-        var labels = new ArrayList<Label>();
-        for (var labelId : taskDto.getLabelIds()) {
-            labels.add(labelService.getLabelById(labelId));
+        User executor = null;
+        if (Objects.nonNull(taskDto.getExecutorId())) {
+            executor = userService.getUserById(taskDto.getExecutorId());
+        }
+        List<Label> labels = null;
+        if (Objects.nonNull(taskDto.getLabelIds()) && taskDto.getLabelIds().size() > 0) {
+            labels = taskDto.getLabelIds().stream()
+                    .map(labelService::getLabelById)
+                    .toList();
         }
         task.setName(taskDto.getName());
         task.setDescription(taskDto.getDescription());
         task.setTaskStatus(taskStatusService.getTaskStatusById(taskDto.getTaskStatusId()));
         task.setLabels(labels);
         task.setAuthor(userService.getCurrentUser());
-        Long executorId = taskDto.getExecutorId();
-        if (executorId != null) {
-            task.setExecutor(userService.getUserById(executorId));
-        }
+        task.setExecutor(executor);
 
         return taskRepository.save(task);
     }
