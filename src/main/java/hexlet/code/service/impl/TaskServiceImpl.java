@@ -71,7 +71,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task updateTask(long id, TaskDto taskDto) {
-        Task task = taskRepository.getById(id);
+        Task task = taskRepository.findById(id).orElseThrow();
         task.setName(taskDto.getName());
         task.setDescription(taskDto.getDescription());
         task.setTaskStatus(taskStatusService.getTaskStatusById(taskDto.getTaskStatusId()));
@@ -87,6 +87,7 @@ public class TaskServiceImpl implements TaskService {
                     .map(labelService::getLabelById)
                     .toList();
         }
+        task.setLabels(labels);
 
         return taskRepository.save(task);
     }
