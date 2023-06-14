@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -77,8 +76,10 @@ public class TaskServiceImpl implements TaskService {
         task.setDescription(taskDto.getDescription());
         task.setTaskStatus(taskStatusService.getTaskStatusById(taskDto.getTaskStatusId()));
 
-        Optional<User> executor = Optional.ofNullable(userService.getUserById(taskDto.getExecutorId()));
-        executor.ifPresent(task::setExecutor);
+        Long executorId = taskDto.getExecutorId();
+        if (executorId != null) {
+            task.setExecutor(userService.getUserById(executorId));
+        }
 
         List<Label> labels = null;
         if (Objects.nonNull(taskDto.getLabelIds()) && taskDto.getLabelIds().size() > 0) {
