@@ -10,7 +10,7 @@ import com.rollbar.spring.webmvc.RollbarSpringConfigBuilder;
 
 @Configuration()
 @ComponentScan({
-        "hexlet.code.app"
+        "hexlet.code"
 })
 public class RollbarConfig {
 

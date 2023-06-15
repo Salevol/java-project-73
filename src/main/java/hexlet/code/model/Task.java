@@ -1,5 +1,6 @@
 package hexlet.code.model;
 
+import jakarta.persistence.CascadeType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -57,7 +58,7 @@ public class Task {
     @JoinColumn(name = "executor_id", referencedColumnName = "id")
     private User executor;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "tasks_labels",
             joinColumns = @JoinColumn(name = "task_id"),

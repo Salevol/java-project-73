@@ -1,5 +1,6 @@
 package hexlet.code.repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.SimpleExpression;
 import hexlet.code.model.QTask;
 import hexlet.code.model.Task;
@@ -17,10 +18,17 @@ public interface TaskRepository extends JpaRepository<Task, Long>,
         QuerydslBinderCustomizer<QTask> {
     Optional<Task> findByName(String name);
 
+    @Override
     default void customize(QuerydslBindings bindings, QTask task) {
-        bindings.bind(task.taskStatus.id).first(SimpleExpression::eq);
-        bindings.bind(task.executor.id).first(SimpleExpression::eq);
-        bindings.bind(task.labels.any().id).first((SimpleExpression::eq));
-        bindings.bind(task.author.id).first(SimpleExpression::eq);
+        bindings.bind(task.author).first(SimpleExpression::eq);
+        bindings.bind(task.executor).first(SimpleExpression::eq);
+        bindings.bind(task.taskStatus).first(SimpleExpression::eq);
+
+
+        bindings.bind(task.labels).first((path, value) -> {
+            BooleanBuilder predicate = new BooleanBuilder();
+            value.forEach(label -> predicate.and(path.any().eq(label)));
+            return predicate;
+        });
     }
 }

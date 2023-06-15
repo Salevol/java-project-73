@@ -22,5 +22,5 @@ spring:
 
 logging:
   level:
-    root: INFO
+    root: DEBUG
     web: DEBUG

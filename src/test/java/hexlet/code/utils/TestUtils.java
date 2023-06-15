@@ -11,6 +11,7 @@ import hexlet.code.dto.LabelDto;
 import hexlet.code.dto.TaskDto;
 import hexlet.code.dto.TaskStatusDto;
 import hexlet.code.dto.UserDto;
+import hexlet.code.model.Label;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
 import hexlet.code.repository.TaskRepository;
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.List;
 import java.util.Map;
 
 import static hexlet.code.controllers.UserController.USER_CONTROLLER_PATH;
@@ -135,14 +137,16 @@ public class TestUtils {
     public ResultActions regDefaultTask(final String byUser) throws Exception {
         regDefaultUser();
         regDefaultTaskStatus(TEST_EMAIL);
+        regDefaultLabel(TEST_EMAIL);
         final User user = userRepository.findAll().get(0);
         final TaskStatus taskStatus = taskStatusRepository.findAll().get(0);
+        final Label label = labelRepository.findAll().get(0);
         final TaskDto testRegTaskDto = new TaskDto(
                 "Task name",
                 "Task description",
                 taskStatus.getId(),
                 user.getId(),
-                null
+                List.of(label.getId())
         );
         return regTask(testRegTaskDto, byUser);
     }

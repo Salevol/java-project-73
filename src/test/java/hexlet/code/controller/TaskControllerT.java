@@ -5,6 +5,7 @@ import hexlet.code.config.SpringConfigForIT;
 import hexlet.code.controllers.UserController;
 import hexlet.code.dto.TaskDto;
 import hexlet.code.model.Task;
+import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,8 @@ import static hexlet.code.controllers.TaskController.ID;
 import static hexlet.code.controllers.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.utils.TestUtils.BASE_URL;
 import static hexlet.code.utils.TestUtils.TEST_EMAIL;
+import static hexlet.code.utils.TestUtils.TEST_EMAIL_2;
+import static hexlet.code.utils.TestUtils.TEST_LABEL_2;
 import static hexlet.code.utils.TestUtils.asJson;
 import static hexlet.code.utils.TestUtils.fromJson;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,6 +49,9 @@ public class TaskControllerT {
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private LabelRepository labelRepository;
 
     @BeforeEach
     public void clear() {
@@ -119,16 +125,16 @@ public class TaskControllerT {
     @Test
     public void updateTask() throws Exception {
         utils.regDefaultTask(TEST_EMAIL);
-
+        utils.regLabel(TEST_LABEL_2, TEST_EMAIL_2);
         Task task = taskRepository.findAll().get(0);
         Long taskId = task.getId();
-
+        List<Long> labelIds = List.of(labelRepository.findByName(TEST_LABEL_2.getName()).orElseThrow().getId());
         TaskDto testTaskUpdate = new TaskDto(
                 "New name",
                 "New description",
                 task.getTaskStatus().getId(),
                 task.getExecutor().getId(),
-                null
+                labelIds
         );
 
         var request = MockMvcRequestBuilders.put(BASE_URL + TASK_CONTROLLER_PATH + ID,
