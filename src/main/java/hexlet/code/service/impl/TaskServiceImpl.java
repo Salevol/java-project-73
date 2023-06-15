@@ -91,6 +91,7 @@ public class TaskServiceImpl implements TaskService {
                 .labels(labels)
                 .author(userService.getCurrentUser())
                 .executor(executor)
+                .createdAt(task.getCreatedAt())
                 .build();
 //        task.setName(taskDto.getName());
 //        task.setDescription(taskDto.getDescription());

@@ -17,8 +17,15 @@ public class RollbarConfig {
     @Value("${rollbar_token:}")
     private String rollbarToken;
 
+    @Value("${spring.profiles.active:}")
+    private String activeProfile;
+
+    /**
+     * Register a Rollbar bean to configure App with Rollbar.
+     */
     @Bean
     public Rollbar rollbar() {
+
         return new Rollbar(getRollbarConfigs(rollbarToken));
     }
 
@@ -26,6 +33,7 @@ public class RollbarConfig {
 
         return RollbarSpringConfigBuilder.withAccessToken(accessToken)
                 .environment("development")
+                .enabled(activeProfile == "prod")
                 .build();
     }
 }

@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -41,7 +40,6 @@ public class Task {
 
     @CreationTimestamp
     @Temporal(TIMESTAMP)
-    @Column(name = "created_at")
     private Date createdAt;
 
     @ManyToOne
