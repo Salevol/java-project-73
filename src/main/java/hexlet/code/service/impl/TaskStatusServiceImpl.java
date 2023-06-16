@@ -4,6 +4,7 @@ import hexlet.code.dto.TaskStatusDto;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.service.TaskStatusService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class TaskStatusServiceImpl implements TaskStatusService {
 

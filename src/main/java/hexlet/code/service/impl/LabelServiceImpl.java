@@ -4,13 +4,16 @@ import hexlet.code.dto.LabelDto;
 import hexlet.code.model.Label;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.service.LabelService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
+
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class LabelServiceImpl implements LabelService {
 
