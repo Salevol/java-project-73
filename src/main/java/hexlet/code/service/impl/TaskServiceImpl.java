@@ -12,10 +12,12 @@ import hexlet.code.service.TaskStatusService;
 import hexlet.code.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
@@ -23,6 +25,7 @@ import java.util.stream.StreamSupport;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
@@ -101,8 +104,16 @@ public class TaskServiceImpl implements TaskService {
 //        task.setLabels(labels);
 //        task.setAuthor(userService.getCurrentUser());
 //        task.setExecutor(executor);
-
-        return taskRepository.save(updatedTask);
+        Task result = null;
+        try {
+            result = taskRepository.save(updatedTask);
+        } catch (Exception e) {
+            log.info(task.toString());
+            log.info(updatedTask.toString());
+            log.error(e.getMessage());
+            log.error(Arrays.toString(e.getStackTrace()));
+        }
+        return result;
     }
 
     @Override

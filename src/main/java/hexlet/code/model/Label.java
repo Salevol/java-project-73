@@ -16,7 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
-import jakarta.validation.constraints.NotBlank;
+//import jakarta.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
 
@@ -29,13 +29,12 @@ public class Label {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name should not be empty")
-    @Column(name = "name", unique = true)
+//    @NotBlank(message = "Name should not be empty")
+    @Column(unique = true)
     private String name;
 
     @CreationTimestamp
     @Temporal(TIMESTAMP)
-    @Column(name = "createdAt")
     private Date createdAt;
 
     @JsonIgnore

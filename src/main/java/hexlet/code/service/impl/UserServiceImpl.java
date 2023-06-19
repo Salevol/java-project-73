@@ -5,7 +5,6 @@ import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,10 +23,8 @@ import static hexlet.code.config.security.SecurityConfig.DEFAULT_AUTHORITIES;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    @Autowired
     private final UserRepository userRepository;
 
-    @Autowired
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -53,7 +50,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User updateUser(long id, UserDto userDto) {
-        User userToUpdate = userRepository.findById(id).get();
+        User userToUpdate = userRepository.findById(id).orElseThrow();
         userToUpdate.setEmail(userDto.getEmail());
         userToUpdate.setFirstName(userDto.getFirstName());
         userToUpdate.setLastName(userDto.getLastName());
@@ -73,7 +70,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User getCurrentUser() {
-        return userRepository.findByEmail(getCurrentUserName()).get();
+        return userRepository.findByEmail(getCurrentUserName()).orElseThrow();
     }
 
     @Override

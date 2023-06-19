@@ -18,8 +18,8 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+//import jakarta.validation.constraints.NotBlank;
+//import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 import java.util.List;
@@ -33,7 +33,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name should not be empty")
+//    @NotBlank(message = "Name should not be empty")
     private String name;
 
     private String description;
@@ -44,12 +44,10 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "task_status_id", referencedColumnName = "id")
-    @NotNull(message = "Task status should not be empty")
     private TaskStatus taskStatus;
 
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
-    @NotNull(message = "Author should not be empty")
     private User author;
 
     @ManyToOne
