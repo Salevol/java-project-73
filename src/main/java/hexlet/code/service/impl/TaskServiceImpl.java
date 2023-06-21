@@ -88,28 +88,28 @@ public class TaskServiceImpl implements TaskService {
                     .map(labelService::getLabelById)
                     .toList();
         }
-        Task updatedTask = Task.builder()
-                .id(task.getId())
-                .name(taskDto.getName())
-                .description(taskDto.getDescription())
-                .taskStatus(taskStatusService.getTaskStatusById(taskDto.getTaskStatusId()))
-                .labels(labels)
-                .author(userService.getCurrentUser())
-                .executor(executor)
-                .createdAt(task.getCreatedAt())
-                .build();
-//        task.setName(taskDto.getName());
-//        task.setDescription(taskDto.getDescription());
-//        task.setTaskStatus(taskStatusService.getTaskStatusById(taskDto.getTaskStatusId()));
-//        task.setLabels(labels);
-//        task.setAuthor(userService.getCurrentUser());
-//        task.setExecutor(executor);
+//        Task updatedTask = Task.builder()
+//                .id(task.getId())
+//                .name(taskDto.getName())
+//                .description(taskDto.getDescription())
+//                .taskStatus(taskStatusService.getTaskStatusById(taskDto.getTaskStatusId()))
+//                .labels(labels)
+//                .author(userService.getCurrentUser())
+//                .executor(executor)
+//                .createdAt(task.getCreatedAt())
+//                .build();
+        task.setName(taskDto.getName());
+        task.setDescription(taskDto.getDescription());
+        task.setTaskStatus(taskStatusService.getTaskStatusById(taskDto.getTaskStatusId()));
+        task.setLabels(labels);
+        task.setAuthor(userService.getCurrentUser());
+        task.setExecutor(executor);
         Task result = null;
         try {
-            result = taskRepository.save(updatedTask);
+            result = taskRepository.save(task);
         } catch (Exception e) {
             log.info(task.toString());
-            log.info(updatedTask.toString());
+            log.info(task.toString());
             log.error(e.getMessage());
             log.error(Arrays.toString(e.getStackTrace()));
         }
