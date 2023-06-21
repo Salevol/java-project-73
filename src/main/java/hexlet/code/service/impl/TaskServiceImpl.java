@@ -23,7 +23,6 @@ import java.util.Objects;
 import java.util.stream.StreamSupport;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class TaskServiceImpl implements TaskService {
@@ -88,16 +87,6 @@ public class TaskServiceImpl implements TaskService {
                     .map(labelService::getLabelById)
                     .toList();
         }
-//        Task updatedTask = Task.builder()
-//                .id(task.getId())
-//                .name(taskDto.getName())
-//                .description(taskDto.getDescription())
-//                .taskStatus(taskStatusService.getTaskStatusById(taskDto.getTaskStatusId()))
-//                .labels(labels)
-//                .author(userService.getCurrentUser())
-//                .executor(executor)
-//                .createdAt(task.getCreatedAt())
-//                .build();
         task.setName(taskDto.getName());
         task.setDescription(taskDto.getDescription());
         task.setTaskStatus(taskStatusService.getTaskStatusById(taskDto.getTaskStatusId()));

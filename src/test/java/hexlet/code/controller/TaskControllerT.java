@@ -122,7 +122,7 @@ public class TaskControllerT {
         assertEquals(1, taskRepository.count());
     }
 
-//    @Test
+    @Test
     public void updateTask() throws Exception {
         utils.regDefaultTask(TEST_EMAIL);
         utils.regLabel(TEST_LABEL_2, TEST_EMAIL_2);
