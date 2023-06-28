@@ -21,8 +21,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.util.List;
 
 import static hexlet.code.config.SpringConfigForIT.TEST_PROFILE;
-import static hexlet.code.controllers.UserController.ID;
-import static hexlet.code.controllers.UserController.USER_CONTROLLER_PATH;
+import static hexlet.code.controller.UserController.ID;
+import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
 import static hexlet.code.utils.TestUtils.TEST_EMAIL;
 import static hexlet.code.utils.TestUtils.TEST_EMAIL_2;
 import static hexlet.code.utils.TestUtils.asJson;

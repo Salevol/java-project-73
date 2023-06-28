@@ -1,4 +1,4 @@
-package hexlet.code.controllers;
+package hexlet.code.controller;
 
 import com.querydsl.core.types.Predicate;
 import hexlet.code.dto.TaskDto;

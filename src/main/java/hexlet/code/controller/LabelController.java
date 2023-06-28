@@ -1,4 +1,4 @@
-package hexlet.code.controllers;
+package hexlet.code.controller;
 
 import hexlet.code.dto.LabelDto;
 import hexlet.code.model.Label;
@@ -24,7 +24,7 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 
-import static hexlet.code.controllers.LabelController.LABEL_CONTROLLER_PATH;
+import static hexlet.code.controller.LabelController.LABEL_CONTROLLER_PATH;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @Tag(name = "label-controller", description = "Label CRUD controller")

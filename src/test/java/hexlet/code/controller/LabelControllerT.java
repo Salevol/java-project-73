@@ -16,8 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
-import static hexlet.code.controllers.LabelController.ID;
-import static hexlet.code.controllers.LabelController.LABEL_CONTROLLER_PATH;
+import static hexlet.code.controller.LabelController.ID;
+import static hexlet.code.controller.LabelController.LABEL_CONTROLLER_PATH;
 import static hexlet.code.utils.TestUtils.BASE_URL;
 import static hexlet.code.utils.TestUtils.TEST_EMAIL;
 import static hexlet.code.utils.TestUtils.TEST_LABEL_2;

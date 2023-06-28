@@ -16,8 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
-import static hexlet.code.controllers.TaskStatusController.ID;
-import static hexlet.code.controllers.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
+import static hexlet.code.controller.TaskStatusController.ID;
+import static hexlet.code.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static hexlet.code.utils.TestUtils.BASE_URL;
 import static hexlet.code.utils.TestUtils.TEST_TASK_STATUS_1;
 import static hexlet.code.utils.TestUtils.TEST_TASK_STATUS_2;

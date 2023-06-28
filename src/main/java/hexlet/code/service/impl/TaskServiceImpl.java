@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -58,7 +58,7 @@ public class TaskServiceImpl implements TaskService {
         if (Objects.nonNull(taskDto.getLabelIds()) && taskDto.getLabelIds().size() > 0) {
             labels = taskDto.getLabelIds().stream()
                     .map(labelService::getLabelById)
-                    .toList();
+                    .collect(Collectors.toList());
         }
 
         Task task = Task.builder()
@@ -84,7 +84,7 @@ public class TaskServiceImpl implements TaskService {
         if (Objects.nonNull(taskDto.getLabelIds()) && taskDto.getLabelIds().size() > 0) {
             labels = taskDto.getLabelIds().stream()
                     .map(labelService::getLabelById)
-                    .toList();
+                    .collect(Collectors.toList());
         }
         task.setName(taskDto.getName());
         task.setDescription(taskDto.getDescription());
@@ -92,16 +92,8 @@ public class TaskServiceImpl implements TaskService {
         task.setLabels(labels);
         task.setAuthor(userService.getCurrentUser());
         task.setExecutor(executor);
-        Task result = null;
-        try {
-            result = taskRepository.save(task);
-        } catch (Exception e) {
-            log.info(task.toString());
-            log.info(task.toString());
-            log.error(e.getMessage());
-            log.error(Arrays.toString(e.getStackTrace()));
-        }
-        return result;
+
+        return taskRepository.save(task);
     }
 
     @Override
